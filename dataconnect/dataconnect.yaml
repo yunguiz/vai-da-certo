@@ -1,0 +1,11 @@
+specVersion: "v1"
+serviceId: "street-store-dataconnect"
+location: "southamerica-east1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "street-store-fdc"
+connectorDirs: ["./connector"]

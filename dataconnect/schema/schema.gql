@@ -1,0 +1,12 @@
+# Schema SQL / Firebase Data Connect (PostgreSQL)
+# Armazena os tokens OAuth 2.0 da API v3 do Bling com id fixo "default"
+type BlingIntegration @table(name: "bling_integrations") {
+  id: String! @col(name: "id") @default(value: "default")
+  accessToken: String! @col(name: "access_token")
+  refreshToken: String! @col(name: "refresh_token")
+  expiresAt: Timestamp! @col(name: "expires_at")
+  expiresIn: Int! @col(name: "expires_in") @default(value: 21600)
+  tokenType: String! @col(name: "token_type") @default(value: "Bearer")
+  scope: String @col(name: "scope")
+  updatedAt: Timestamp! @col(name: "updated_at") @default(expr: "request.time")
+}

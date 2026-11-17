@@ -1,0 +1,24 @@
+# @auth(level: NO_ACCESS) bloqueia completamente gravações via frontend/client SDK.
+# Apenas o Firebase Admin SDK das Cloud Functions consegue executar esta mutation.
+mutation UpsertBlingToken(
+  $id: String = "default"
+  $accessToken: String!
+  $refreshToken: String!
+  $expiresAt: Timestamp!
+  $expiresIn: Int!
+  $tokenType: String!
+  $scope: String
+) @auth(level: NO_ACCESS) {
+  blingIntegration_upsert(
+    data: {
+      id: $id
+      accessToken: $accessToken
+      refreshToken: $refreshToken
+      expiresAt: $expiresAt
+      expiresIn: $expiresIn
+      tokenType: $tokenType
+      scope: $scope
+      updatedAt_expr: "request.time"
+    }
+  )
+}

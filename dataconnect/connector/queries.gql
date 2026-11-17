@@ -1,0 +1,14 @@
+# @auth(level: NO_ACCESS) bloqueia completamente leituras via frontend/client SDK.
+# Apenas o Firebase Admin SDK das Cloud Functions consegue executar esta query.
+query GetBlingToken($id: String = "default") @auth(level: NO_ACCESS) {
+  blingIntegration(key: { id: $id }) {
+    id
+    accessToken
+    refreshToken
+    expiresAt
+    expiresIn
+    tokenType
+    scope
+    updatedAt
+  }
+}

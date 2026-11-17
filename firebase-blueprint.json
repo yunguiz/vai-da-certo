@@ -1,0 +1,151 @@
+{
+  "entities": {
+    "Review": {
+      "title": "Customer Review",
+      "description": "Depoimento de cliente com feedback, nota e foto real de produto",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 60,
+          "description": "Nome do cliente que enviou o depoimento"
+        },
+        "city": {
+          "type": "string",
+          "maxLength": 60,
+          "description": "Cidade e estado do cliente (ex: Itabira - MG)"
+        },
+        "rating": {
+          "type": "number",
+          "description": "Nota em estrelas de 1 a 5"
+        },
+        "comment": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 1000,
+          "description": "Texto do feedback/avaliação do cliente"
+        },
+        "productName": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Nome da peça ou drop avaliado"
+        },
+        "photoUrl": {
+          "type": "string",
+          "maxLength": 400000,
+          "description": "Foto real do produto ou look enviada pelo cliente"
+        },
+        "verifiedPurchase": {
+          "type": "boolean",
+          "description": "Flag indicando compra confirmada"
+        },
+        "avatarText": {
+          "type": "string",
+          "maxLength": 4,
+          "description": "Iniciais do cliente para o avatar"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp ISO da publicação do depoimento"
+        }
+      },
+      "required": ["name", "rating", "comment", "createdAt"]
+    },
+    "BlingIntegration": {
+      "title": "Bling OAuth 2.0 Integration Tokens",
+      "description": "Credenciais OAuth 2.0 do Bling API v3 gerenciadas exclusivamente pelo backend (Admin SDK / Cloud Functions)",
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "maxLength": 4096,
+          "description": "Token Bearer atual para chamadas na API v3 do Bling (validade de 6 horas)"
+        },
+        "refresh_token": {
+          "type": "string",
+          "maxLength": 4096,
+          "description": "Refresh token rotativo de uso único devolvido pelo Bling v3"
+        },
+        "expires_at": {
+          "type": "number",
+          "description": "Timestamp Unix em milissegundos indicando a expiração exata do access_token"
+        },
+        "expires_in": {
+          "type": "number",
+          "description": "Duração em segundos informada pelo Bling (padrão 21600s = 6 horas)"
+        },
+        "token_type": {
+          "type": "string",
+          "maxLength": 32,
+          "description": "Tipo do token (Bearer)"
+        },
+        "scope": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "Escopos concedidos no OAuth do Bling"
+        },
+        "obtained_at": {
+          "type": "number",
+          "description": "Timestamp Unix em milissegundos de quando o par de tokens foi obtido/renovado"
+        }
+      },
+      "required": ["access_token", "refresh_token", "expires_at"]
+    },
+    "Product": {
+      "title": "Bling Synced Product",
+      "description": "Produto e variações de roupa sincronizados do Bling API v3 para o Firestore via WriteBatch",
+      "type": "object",
+      "properties": {
+        "blingId": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "ID único do produto (ou produto pai) no Bling"
+        },
+        "nome": {
+          "type": "string",
+          "maxLength": 250,
+          "description": "Nome do produto"
+        },
+        "codigo": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Código SKU no Bling"
+        },
+        "preco": {
+          "type": "number",
+          "description": "Preço de venda em BRL"
+        },
+        "estoque": {
+          "type": "number",
+          "description": "Saldo total em estoque (saldoVirtualTotal / saldoFisicoTotal)"
+        },
+        "imagemURL": {
+          "type": "string",
+          "maxLength": 2048,
+          "description": "URL principal da foto do produto"
+        },
+        "categoria": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "Categoria da peça"
+        }
+      },
+      "required": ["blingId", "nome", "preco", "estoque"]
+    }
+  },
+  "firestore": {
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Depoimentos e fotos reais compartilhadas pelos clientes da Street Store"
+    },
+    "/integrations/{integrationId}": {
+      "schema": "BlingIntegration",
+      "description": "Tokens OAuth privados de integrações (ex: integrations/bling). Acesso bloqueado no client SDK."
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Catálogo sincronizado em lote pelo backend (WriteBatch). Leitura pública, escrita somente Admin SDK."
+    }
+  }
+}

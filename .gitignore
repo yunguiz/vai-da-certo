@@ -1,0 +1,15 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+!functions/.env.example
+.bling_tokens.db*
+.bling_tokens.json
+.melhor_envio_tokens.json
+functions/lib/
+functions/node_modules/
+

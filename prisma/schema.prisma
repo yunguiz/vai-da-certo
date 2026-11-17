@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model BlingToken {
+  id            Int      @id @default(1)
+  access_token  String   @db.Text
+  refresh_token String   @db.Text
+  expires_at    DateTime @db.Timestamptz(3)
+  token_type    String   @default("Bearer")
+  scope         String   @default("")
+  obtained_at   DateTime @default(now()) @db.Timestamptz(3)
+  updated_at    DateTime @updatedAt @db.Timestamptz(3)
+
+  @@map("bling_tokens")
+}
